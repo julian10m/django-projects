@@ -1,9 +1,20 @@
 from django.shortcuts import render, get_object_or_404
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.views.generic import ListView
 from .models import Post
 
+POSTS_PER_PAGE = 3
+
+class PostListView(ListView):
+    # model = Post uses Post.objects.all()
+    queryset = Post.published.all()
+    # context_object_name = object_list  ...by default
+    context_object_name = 'posts'
+    paginate_by = POSTS_PER_PAGE
+    # template_name = 'blog/post_list.html ...by default
+    template_name = 'blog/post/list.html'
+
 def post_list(request):
-    POSTS_PER_PAGE = 3
     object_list = Post.published.all()
     paginator = Paginator(object_list, POSTS_PER_PAGE)
     page = request.GET.get('page') # current page number
