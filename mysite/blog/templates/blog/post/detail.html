@@ -7,6 +7,17 @@
 
 {% block content %}
     <h1> {{ post.title }}</h1>
+    <p class="tags">
+        Tags: 
+        {% for tag in post.tags.all %}
+            <a href="{% url 'blog:post_list_by_tag' tag.slug %}">
+                {{ tag.name }}
+            </a>            
+            {% if not forloop.last %}, {% endif %}
+        {% empty %}
+            none have been assigned yet.
+        {% endfor %}
+    </p>
     <p class="date">
         Published {{ post.publish }} by {{ post.author }}
     </p>
@@ -16,6 +27,14 @@
             Share this post!
         </a>
     </p>
+    <h2>Similar posts</h2>
+    {% for post in similar_posts %} 
+        <p>
+            <a href="{{ post.get_absolute_url }}">{{ post.title }}</a>
+        </p>
+    {% empty %}
+        There are no similar posts yet.
+    {% endfor %}
     {% with comments.count as total_comments %}
         <h2>
             {{ total_comments }} comment{{ total_comments|pluralize }}

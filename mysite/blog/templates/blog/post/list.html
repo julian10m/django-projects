@@ -20,6 +20,8 @@
                     {{ tag.name }}
                 </a>            
                 {% if not forloop.last %}, {% endif %}
+            {% empty %}
+                none have been assigned yet.
             {% endfor %}
         </p>
         <p class="date">
