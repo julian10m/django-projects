@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'images.apps.ImagesConfig',
     'easy_thumbnails',
-    # "sslserver",
+    'actions.apps.ActionsConfig',
 ]
 
 MIDDLEWARE = [
