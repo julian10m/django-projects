@@ -16,6 +16,11 @@
                         <a href="{{ target.get_absolute_url }}">
                             <img src="{{ im.url }}" class="item-img">
                         </a>
+                    {% elif target.profile.photo %}
+                        {% thumbnail target.profile.photo '80x80' crop='100%' as im %}
+                        <a href="{{ target.get_absolute_url }}">
+                            <img src="{{ im.url }}" class="item-img">
+                        </a>
                     {% endif %}
                 {% endwith %}
             {% endif %}
