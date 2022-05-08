@@ -9,6 +9,7 @@ from common.decorators import ajax_required
 from .forms import LoginForm, UserRegistrationForm, \
                    UserEditForm, ProfileEditForm
 from .models import Profile, Contact
+from actions.models import Action
 from actions.utils import create_action
 
 @ajax_required
@@ -54,9 +55,16 @@ def user_detail(request, username):
 
 @login_required
 def dashboard(request):
+    actions = Action.objects.exclude(user=request.user)
+    following_ids = request.user.following.values_list('id', flat=True)
+    if following_ids:
+        actions = actions.filter(user_id__in=following_ids)
+    actions = actions.select_related('user', 'user__profile') \
+                     .prefetch_related('target')[:10]
     return render(request, 
                  'account/dashboard.html', 
-                 {'section': 'dashboard'})
+                 {'section': 'dashboard',
+                  'actions': actions})
 
 def user_login(request):
     if request.method == 'POST':
